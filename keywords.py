@@ -1,0 +1,20 @@
+track = [
+    '#ToqueDeQueda',
+    '#RenunciaPiñeraCuliao',
+    '#ChileEnResistencia',
+    '#ToqueDeQuedaTotal',
+    '#EstadoEmergencia',
+    '#EstadoDeExcepcion',
+    '#ChileDesperto',
+    '#ChileResiste',
+    '#Valparaiso',
+    '#Coquimbo',
+    '#FuerzaChile',
+    '#ChileSeCanso',
+    '#ChileProtests',
+    '#ChileEnMarcha',
+    '#PiñeraRenuncia',
+    '#ToqueDeQuedaChile',
+    '#ChileSeLevanta',
+    '#RenunciaPiñera'
+]
