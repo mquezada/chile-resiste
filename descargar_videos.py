@@ -11,9 +11,10 @@ from tqdm import tqdm
 DATA_PATH = Path('/mnt/volume_nyc1_02/videos_save')
 
 def download(tweet):
-    url = tweet.media_url
-    tweet_id = tweet.tweet_id
-    created_at = tweet.created_at
+    id = tweet[0]
+    url = tweet[1]
+    tweet_id = tweet[2]
+    created_at = tweet[3]
 
     resp = requests.get(url, allow_redirects=True)
 
@@ -28,14 +29,16 @@ def download(tweet):
 
         with fpath.open('wb') as f:
             f.write(resp.content)
-        set_downloaded(tweet.id, str(fpath))
-        return str(fpath)
+        
+        return id, str(fpath)
 
 
 tweets_no_downloaded = get_tweets()
+data = [(t.id, t.media_url, t.tweet_id, t.created_at) for t in tweets_no_downloaded]
+
 pool = multiprocessing.Pool(16)
-for res in pool.imap_unordered(download, tweets_no_downloaded):
-    print(res)
+for res in pool.imap_unordered(download, data):
+    set_downloaded(res[0], res[1])
 
 #for t in tqdm(tweets_no_downloaded):
 #    download(t)
