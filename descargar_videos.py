@@ -29,11 +29,13 @@ def download(tweet):
         with fpath.open('wb') as f:
             f.write(resp.content)
         set_downloaded(tweet.id, str(fpath))
+        return str(fpath)
 
 
-tweets_no_downloaded = list(get_tweets())
-#pool = multiprocessing.Pool(16)
-#pool.imap_unordered(download, tweets_no_downloaded)
+tweets_no_downloaded = get_tweets()
+pool = multiprocessing.Pool(16)
+for res in pool.imap_unordered(download, tweets_no_downloaded):
+    print(res)
 
-for t in tqdm(tweets_no_downloaded):
-    download(t)
+#for t in tqdm(tweets_no_downloaded):
+#    download(t)
