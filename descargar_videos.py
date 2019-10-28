@@ -6,6 +6,7 @@ import multiprocessing
 import datetime
 from dbmanager import *
 from pathlib import Path
+from tqdm import tqdm
 
 DATA_PATH = Path('/mnt/volume_nyc1_02/videos_save')
 
@@ -31,6 +32,10 @@ def download(tweet):
         print(f'OK - {fpath}')
 
 
-tweets_no_downloaded = get_tweets()
-pool = multiprocessing.Pool(16)
-pool.imap_unordered(download, tweets_no_downloaded)
+tweets_no_downloaded = list(get_tweets())
+#pool = multiprocessing.Pool(16)
+#pool.imap_unordered(download, tweets_no_downloaded)
+
+for t in tqdm(tweets_no_downloaded):
+    download(t)
+    break
