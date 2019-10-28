@@ -16,21 +16,24 @@ def download(tweet):
     tweet_id = tweet[2]
     created_at = tweet[3]
 
-    resp = requests.get(url, allow_redirects=True)
+    try:
+        resp = requests.get(url, allow_redirects=True)
 
-    if resp.status_code == 200:
-        folder = created_at.strftime('%Y%m%d')
-        ts = created_at.strftime('%Y%m%d_%H%M%S')
+        if resp.status_code == 200:
+            folder = created_at.strftime('%Y%m%d')
+            ts = created_at.strftime('%Y%m%d_%H%M%S')
 
-        save_path = DATA_PATH / Path(folder)
-        save_path.mkdir(exist_ok=True)
+            save_path = DATA_PATH / Path(folder)
+            save_path.mkdir(exist_ok=True)
 
-        fpath = save_path / Path(f'{ts}_{tweet_id}.mp4')
+            fpath = save_path / Path(f'{ts}_{tweet_id}.mp4')
 
-        with fpath.open('wb') as f:
-            f.write(resp.content)
+            with fpath.open('wb') as f:
+                f.write(resp.content)
 
-        return id, str(fpath)
+            return id, str(fpath)
+    except:
+        return None
 
 
 print("extracting data")
