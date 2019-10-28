@@ -4,18 +4,33 @@ import requests
 from sqlalchemy import create_engine
 import multiprocessing
 import datetime
+from dbmanager import *
+from pathlib import Path
 
-cnx = create_engine('mysql+pymysql://mq:mq@localhost:3306/manifestaciones')
+DATA_PATH = Path('/mnt/volume_nyc1_02/videos_save')
 
-df = pd.read_sql_query("SELECT * FROM tweets where downloaded=0", cnx)
+def download(tweet):
+    url = tweet.media_url
+    tweet_id = tweet.tweet_id
+    created_at = tweet.created_at
 
-def download(tweet_id, url):
     resp = requests.get(url, allow_redirects=True)
-    if resp.status_code == 200:
-        now = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
-        with open(f'/mnt/volume_nyc1_02/videos/{tweet_id}_{now}.mp4', 'wb') as f:
-            f.write(resp.content)
 
-data = list(map(tuple, list(df[['tweet_id', 'media_url']].values)))
+    if resp.status_code == 200:
+        folder = created_at.strftime('%Y%m%d')
+        ts = created_at.strftime('%Y%m%d_%H%M%S')
+
+        save_path = DATA_PATH / Path(folder)
+        save_path.mkdir(exist_ok=True)
+
+        fpath = save_path / Path(f'{ts}_{tweet_id}.mp4')
+
+        with fpath.open('wb') as f:
+            f.write(resp.content)
+        set_downloaded(tweet.id, str(fpath))
+        print(f'OK - {fpath}')
+
+
+tweets_no_downloaded = get_tweets()
 pool = multiprocessing.Pool(16)
-pool.starmap(download, data)
+pool.imap_unordered(download, tweets_no_downloaded)
