@@ -13,9 +13,9 @@ logging.basicConfig(
     format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
 
-def get_tweets(downloaded=False):
+def get_tweets(downloaded=False, limit=30000):
     with session.begin():
-        tweets = session.query(Tweet).filter_by(downloaded=downloaded)
+        tweets = session.query(Tweet).filter_by(downloaded=downloaded).limit(limit)
         return tweets.all()
 
 def set_downloaded(row_id, path):
