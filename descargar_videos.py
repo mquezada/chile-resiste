@@ -29,7 +29,6 @@ def download(tweet):
         with fpath.open('wb') as f:
             f.write(resp.content)
         set_downloaded(tweet.id, str(fpath))
-        print(f'OK - {fpath}')
 
 
 tweets_no_downloaded = list(get_tweets())
@@ -38,4 +37,3 @@ tweets_no_downloaded = list(get_tweets())
 
 for t in tqdm(tweets_no_downloaded):
     download(t)
-    break
