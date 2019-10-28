@@ -88,7 +88,7 @@ def process_lines(f):
             media_urls.add(media_url)
             results.append([tweet_id, user_id, user_handle, user_name, verified, user_followers, 
                             user_followees, user_lang, user_location, user_statuses, tweet_lang,
-                            created_at, rts, likes, media_url, media_type, duration, f'"{text}"'])
+                            created_at, rts, likes, media_url, media_type, duration, text])
     return results
 
 
