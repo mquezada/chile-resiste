@@ -33,11 +33,14 @@ def download(tweet):
         return id, str(fpath)
 
 
+print("extracting data")
 tweets_no_downloaded = get_tweets()
 data = [(t.id, t.media_url, t.tweet_id, t.created_at) for t in tweets_no_downloaded]
 
+print("pool")
 pool = multiprocessing.Pool(16)
 for res in pool.imap_unordered(download, data):
+    print(f"DONE - {res[1]}")
     set_downloaded(res[0], res[1])
 
 #for t in tqdm(tweets_no_downloaded):
