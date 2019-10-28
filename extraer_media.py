@@ -15,21 +15,6 @@ output = sys.argv[2]
 
 video_match = 'https://twitter.com/.*/status/[0-9]+/video/1'
 
-colnames = [
-    'tweet_id',
-    'user_id',
-    'user_handle',
-    'user_name',
-    'verified',
-    'created_at',
-    'rts',
-    'likes',
-    'media_url',
-    'media_type',
-    'duration',
-    'text'
-]
-
 
 def process_lines(f):
     media_urls = set()
@@ -40,12 +25,21 @@ def process_lines(f):
 
         if 'retweeted_status' in j:
             j = j['retweeted_status']
+        elif 'quoted_status' in j:
+            j = j['quoted_status']
 
         tweet_id = j['id_str']
         user_id = j['user']['id_str']
         user_handle = j['user']['screen_name']
         user_name = j['user']['name']
         verified = int(j['user']['verified'])
+        user_followers = int(j['user']['followers_count'])
+        user_followees = int(j['user']['friends_count'])
+        user_lang = j['user']['lang']
+        user_location = j['user']['location']
+        user_statuses = int(j['user']['statuses_count'])
+        #user_desc = j['user']['description']
+        tweet_lang = j['lang']
         rts = j['retweet_count']
         likes = j['favorite_count']
         created_at = j['created_at']
@@ -92,7 +86,8 @@ def process_lines(f):
                 continue
 
             media_urls.add(media_url)
-            results.append([tweet_id, user_id, user_handle, user_name, verified,
+            results.append([tweet_id, user_id, user_handle, user_name, verified, user_followers, 
+                            user_followees, user_lang, user_location, user_statuses, tweet_lang,
                             created_at, rts, likes, media_url, media_type, duration, f'"{text}"'])
     return results
 
