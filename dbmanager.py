@@ -5,7 +5,7 @@ from models import Tweet, DownloadPath
 
 import logging
 
-engine = create_engine('mysql+pymysql://mq:mq@localhost:3306/manifestaciones')
+engine = create_engine('mysql+pymysql://mq:mq@localhost:3306/manifestaciones', isolation_level="READ_COMMITTED", pool_recycle=28800, pool_pre_ping=True)
 session_pool = sessionmaker(engine, autocommit=True)
 session = session_pool()
 
