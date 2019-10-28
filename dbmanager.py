@@ -23,5 +23,5 @@ def set_downloaded(row_id, path):
         tweet = session.query(Tweet).filter_by(id=row_id).first()
         tweet.downloaded = True
 
-        dpath = DownloadPath(tweet_id=tweet.tweet_id, path=path)
+        dpath = DownloadPath(tweet_id=tweet.tweet_id, download_path=path)
         session.add(dpath)
