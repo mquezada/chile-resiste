@@ -25,3 +25,12 @@ def set_downloaded(row_id, path):
 
         dpath = DownloadPath(tweet_id=tweet.tweet_id, download_path=path)
         session.add(dpath)
+
+def set_downloaded_bulk(data):
+    with session.begin():
+        for row_id, path in data:
+            tweet = session.query(Tweet).filter_by(id=row_id).first()
+            tweet.downloaded = True
+
+            dpath = DownloadPath(tweet_id=tweet.tweet_id, download_path=path)
+            session.add(dpath)

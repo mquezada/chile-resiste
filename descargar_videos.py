@@ -44,10 +44,6 @@ print("pool")
 pool = multiprocessing.Pool(16)
 results = pool.map(download, data)
 
-for res in results:
-    if res:
-        i, p = res
-        set_downloaded(i, p)
-
-#for t in tqdm(tweets_no_downloaded):
-#    download(t)
+print("saving results")
+results2 = [r for r in results if r]
+set_downloaded_bulk(results2)
